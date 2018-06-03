@@ -36,8 +36,6 @@ class Hand
 
     private $distribution;
 
-    private $distribution2;
-
     private $sorted;
 
     public function launch()

@@ -20,7 +20,6 @@ class CardsController extends Controller
         }
         catch (\Exception $e)
         {
-            //var_dump($e->getMessage());
             $error = "There were a problem when validating this cards hand!";
         }
         $distribution   = $hand->getDistribution();

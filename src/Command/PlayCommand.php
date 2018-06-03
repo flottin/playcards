@@ -78,7 +78,6 @@ class PlayCommand extends Command
         }
         catch (\Exception $e)
         {
-            //var_dump($e->getMessage());
             $output->writeln("<error>There were a problem when validating this cards hand!</error>");
         }
     }
