@@ -10,10 +10,11 @@ use App\Service\Hand;
 class CardsController extends Controller
 {
   /**
-   * @Route("/cards/play")
+   * @Route("/cards/play/{iterations}")
    */
-    public function play(Hand $hand)
+    public function play( $iterations=1, Hand $hand)
     {
+        var_dump($iterations);
         $error = false;
         try {
             $hand->launch();

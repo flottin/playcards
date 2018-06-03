@@ -5,6 +5,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
+use Symfony\Component\Console\Input\InputOption;
 
 use App\Service\Hand;
 
@@ -17,7 +18,15 @@ class PlayCommand extends Command
       $this
       ->setName('play:cards')
       ->setDescription('Cards distribution')
-      ->setHelp('Sort a set of cards');
+      ->setHelp('Sort a set of cards')
+      ->addOption(
+        'iterations',
+        null,
+        InputOption::VALUE_OPTIONAL,
+        'How many times should the message be printed?',
+        1
+    );
+    ;
     }
 
     public function __construct(Hand $hand)
@@ -28,6 +37,10 @@ class PlayCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+
+        for ($i = 0; $i < $input->getOption('iterations'); $i++) {
+    //$output->writeln($i);
+}
         $outputStyle = new OutputFormatterStyle('black', 'green', array());
         $outputStyleRed = new OutputFormatterStyle('red', 'green', array());
         $output->getFormatter()->setStyle('black', $outputStyle);
