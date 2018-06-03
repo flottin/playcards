@@ -20,7 +20,15 @@ color:red;
     </head>
     <body>
         <div id="cards">
+                {% for card in distribution %}
 
+
+                {{ card.value }}
+
+
+                {% endfor %}
+
+                
         	<span class=spade>10&#x2660</span>
           <span class=club>K&#x2663</span>
           <span class=heart>Q&#x2665</span>

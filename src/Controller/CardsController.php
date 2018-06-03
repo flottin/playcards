@@ -5,21 +5,21 @@ namespace App\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use App\Service\Hands;
+use App\Service\Hand;
 
 class CardsController extends Controller
 {
   /**
    * @Route("/cards/play")
    */
-    public function play(Hands $hands)
+    public function play(Hand $hand)
     {
-      var_dump($hands->get());
-    
-        $articles= [];
+        $distribution   = $hand->get();
+        $sorted         = $hand->getSorted($distribution);
+
         return $this->render(
                    'cards/play.html.twig',
-                   array('articles' => $articles)
+                   array('sorted' => $sorted, 'distribution' => $distribution->data->cards)
                );
 
     }

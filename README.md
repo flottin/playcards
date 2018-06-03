@@ -1,22 +1,25 @@
 # playcards
 
-Sort a hands of playcards...
+Sort a hand of play cards...
 
 This application can be run in console mode and in a web application
 
+It requires php7.0 minimum
 
-it requires php7.0 minimum
-
-
-guzzle symfony/console symfony
-
-can be install via composer
-
+It's a symfony application and require guzzle
 
 git clone https://github.com/flottin/playcards.git
 
+```
+cd playcards
+php composer.phar -vvvvv up
+```
 
-install composer
+```
+ifconfig and find the ip
+```
 
-# Install Composer
-curl -sS https://getcomposer.org/installer | php
+# run embed server
+```
+sudo php bin/console server:start 192.168.0.49:80
+```
