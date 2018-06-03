@@ -5,37 +5,74 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
         <title>Play cards</title>
         <style>
-        span{
-        font-size: 2em;
-        background-color:green;
+        .card
+        {
+            font-size: 1.5em;
+            background-color:green;
+            width: 50px;
+            height: 80px;
+            float: left;
+            margin:5px;
+            display: flex;
+              align-items: center;
+              justify-content: center;
         }
-.heart{
-color:red;
-}
-.diamond{
-color:red;
-}
+        #sorted{
+            clear: both;
+        }
+        #title{
+            clear: both;
+        }
+        .heart
+        {
+            color:red;
+        }
+        .diamond
+        {
+            color:red;
+        }
 
         </style>
     </head>
     <body>
-        <div id="cards">
-                {% for card in distribution %}
-
-
-                {{ card.value }}
-
-
-                {% endfor %}
-
-                
-        	<span class=spade>10&#x2660</span>
-          <span class=club>K&#x2663</span>
-          <span class=heart>Q&#x2665</span>
-          <span class=diamond>1&#x2666</span>
-
+        {% if error == false %}
+        <div>
+            Category order :
+            {% for value in distribution.data.categoryOrder %}
+                {{ value }}
+            {% endfor %}
         </div>
+        <div>
+            Height order :
+            {% for value in distribution.data.valueOrder %}
+                {{ value }}
+            {% endfor %}
+        </div>
+        <div id="title">
+            Hand input :
+        </div>
+        <div id="distribution">
+            {% for card in distribution.data.cards %}
+                <div class="card {{ card.category|lower }}">
+            {{ height[card.value] }} {{ categories[card.category] }}
+                </div>
+            {% endfor %}
+        </div>
+        <div id="title">
+            Hand output :
+        </div>
+        <div id="sorted">
+            {% for card in sorted %}
+                <div class="card {{ card.category|lower }}">
+            {{ height[card.value] }} {{ categories[card.category] }}
+            </div>
+            {% endfor %}
+        </div>
+{% else %}
+<div>
 
-
+        {{ error }}
+    </div>
+{% endif %}
     </body>
 </html>

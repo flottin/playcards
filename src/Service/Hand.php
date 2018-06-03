@@ -1,6 +1,6 @@
 <?php
 
-// src/Service/MessageGenerator.php
+// src/Service/Hand.php
 namespace App\Service;
 
 class Hand
@@ -34,20 +34,64 @@ class Hand
         "KING"      => "K"
     ];
 
-  public function get()
-  {
-    $res = '{"exerciceId":"5b132575975a0c0e5ee75a7d","dateCreation":1527981429687,"candidate":{"candidateId":"57187b7c975adeb8520a283c","firstName":"Othmane","lastName":"QABLAOUI"},"data":{"cards":[{"category":"CLUB","value":"SEVEN"},{"category":"DIAMOND","value":"EIGHT"},{"category":"SPADE","value":"EIGHT"},{"category":"CLUB","value":"KING"},{"category":"DIAMOND","value":"ACE"},{"category":"CLUB","value":"THREE"},{"category":"DIAMOND","value":"JACK"},{"category":"HEART","value":"FOUR"},{"category":"DIAMOND","value":"KING"},{"category":"DIAMOND","value":"TEN"}],"categoryOrder":["DIAMOND","HEART","SPADE","CLUB"],"valueOrder":["ACE","TWO","THREE","FOUR","FIVE","SIX","SEVEN","EIGHT","NINE","TEN","JACK","QUEEN","KING"]},"name":"cards"}';
+    private $distribution;
 
-    return json_decode($res);
-  }
+    private $distribution2;
 
-  public function set()
-  {
+    private $sorted;
 
-  }
+    public function launch()
+    {
+        $this->distribution = self::get();
+        $this->sorted = self::sort($this->distribution);
+        self::set($this->sorted, $this->distribution);
+    }
 
-  public function getSorted($distribution)
-  {
+    public function getDistribution()
+    {
+        return $this->distribution;
+    }
+
+    public function getSorted()
+    {
+        return $this->sorted;
+    }
+
+    public function get()
+    {
+        $client = new \GuzzleHttp\Client();
+        $url = 'https://recrutement.local-trust.com/test/cards/586f4e7f975adeb8520a4b88';
+        $res = $client->request('GET', $url);
+        return json_decode($res->getBody());
+    }
+
+    public function set($sorted, $distribution)
+    {
+        $exerciceId = $distribution->exerciceId;
+        foreach($distribution->data as $k=>$v)
+        {
+            if ($k == 'cards')
+            {
+                $d[$k] = $sorted;
+            }
+            else {
+                $d[$k] = $v;
+            }
+        }
+        $params = json_encode($d);
+        $url = "https://recrutement.local-trust.com/test/{$exerciceId}";
+        $client = new \GuzzleHttp\Client([
+            'headers' => [ 'Content-Type' => 'application/json' ]
+        ]);
+
+        $response = $client->post($url,
+            ['body' => $params]
+        );
+        return $response;
+    }
+
+    public function sort($distribution)
+    {
       $res = [];
       foreach ($distribution->data->categoryOrder as $category)
       {
@@ -73,8 +117,6 @@ class Hand
             }
           }
       }
-
       return $results;
-     
-  }
+    }
 }

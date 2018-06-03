@@ -15,21 +15,14 @@ class PlayCommand extends Command
     protected function configure()
     {
       $this
-      // the name of the command (the part after "bin/console")
       ->setName('play:cards')
-
-      // the short description shown while running "php bin/console list"
       ->setDescription('Cards distribution')
-
-      // the full command description shown when running the command with
-      // the "--help" option
       ->setHelp('Sort a set of cards');
     }
 
     public function __construct(Hand $hand)
     {
         $this->hand = $hand;
-
         parent::__construct();
     }
 
@@ -39,40 +32,54 @@ class PlayCommand extends Command
         $outputStyleRed = new OutputFormatterStyle('red', 'green', array());
         $output->getFormatter()->setStyle('black', $outputStyle);
         $output->getFormatter()->setStyle('red', $outputStyleRed);
+        try {
+            $this->hand->launch();
 
-        $distribution = $this->hand->get();
-        $sorted = $this->hand->getSorted($distribution);
+            $distribution = $this->hand->getDistribution();
+            $out = 'Category Order : ';
+            foreach ($distribution->data->categoryOrder as $value)
+            {
+                $out .= $value . ' ';
+            }
+            $output->writeln($out);
+            $out = 'Height Order : ';
+            foreach ($distribution->data->valueOrder as $value)
+            {
+                $out .= $value . ' ';
+            }
+            $output->writeln($out);
+            $output->writeln('Hand input : ');
+            foreach ($distribution->data->cards as $card)
+            {
+                $out = "<";
+                $out .= Hand::COLORS[$card->category];
+                $out .= "> ";
+                $out .= Hand::HEIGHT[$card->value];
+                $out .= Hand::CATEGORIES[$card->category];
+                $out .= "</>";
+                $output->write($out);
+            }
+            $output->writeln("");
 
-//var_dump($sorted);
-//die;
-//var_dump($distribution->data->cards);
-//var_dump($distribution->data);
+            $sorted = $this->hand->getSorted();
+            $output->writeln('Hand output : ');
+            foreach ($sorted as $card)
+            {
+                $out = "<";
+                $out .= Hand::COLORS[$card->category];
+                $out .= "> ";
+                $out .= Hand::HEIGHT[$card->value];
+                $out .= Hand::CATEGORIES[$card->category];
+                $out .= "</>";
 
-        foreach ($distribution->data->cards as $card)
-        {
-            $out = "<";
-            $out .= Hand::COLORS[$card->category];
-            $out .= "> ";
-            $out .= Hand::HEIGHT[$card->value];
-            $out .= Hand::CATEGORIES[$card->category];
-            $out .= "</>";
-
-            $output->write($out);
+                $output->write($out);
+            }
+            $output->writeln("");
         }
-        $output->writeln("");
-
-
-        foreach ($sorted as $card)
+        catch (\Exception $e)
         {
-            $out = "<";
-            $out .= Hand::COLORS[$card->category];
-            $out .= "> ";
-            $out .= Hand::HEIGHT[$card->value];
-            $out .= Hand::CATEGORIES[$card->category];
-            $out .= "</>";
-
-            $output->write($out);
+            //var_dump($e->getMessage());
+            $output->writeln("<error>There were a problem when validating this cards hand!</error>");
         }
-        $output->writeln("");
     }
 }

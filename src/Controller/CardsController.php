@@ -14,12 +14,28 @@ class CardsController extends Controller
    */
     public function play(Hand $hand)
     {
-        $distribution   = $hand->get();
-        $sorted         = $hand->getSorted($distribution);
-
+        $error = false;
+        try {
+            $hand->launch();
+        }
+        catch (\Exception $e)
+        {
+            //var_dump($e->getMessage());
+            $error = "There were a problem when validating this cards hand!";
+        }
+        $distribution   = $hand->getDistribution();
+        $sorted         = $hand->getSorted();
+        $datas = array(
+             'sorted'       => $sorted,
+             'distribution' => $distribution,
+             'colors'       => Hand::COLORS,
+             'categories'   => Hand::CATEGORIES,
+             'height'       => Hand::HEIGHT,
+             'error'        => $error
+         );
         return $this->render(
                    'cards/play.html.twig',
-                   array('sorted' => $sorted, 'distribution' => $distribution->data->cards)
+                   $datas
                );
 
     }
