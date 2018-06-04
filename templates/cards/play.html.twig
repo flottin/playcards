@@ -5,26 +5,37 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
         <title>Play cards</title>
         <style>
+        #distribution, #sorted
+        {
+            height: 100px;
+            width: 620px;
+            background-color:green;
+            padding: 30px;
+        }
         .card
         {
-            font-size: 1.5em;
-            background-color:green;
-            width: 50px;
-            height: 80px;
-            float: left;
-            margin:5px;
-            display: flex;
+              font-size: 1.5em;
+              background-color:white;
+              width: 50px;
+              height: 80px;
+              float: left;
+              margin:5px;
+              display: flex;
               align-items: center;
               justify-content: center;
         }
         #sorted{
             clear: both;
+            margin-bottom:10px;
         }
         #title{
             clear: both;
         }
         .begin{
             clear: both;
+        }
+        .block{
+            padding-top: 30px;
         }
         .heart
         {
@@ -41,7 +52,7 @@
 
       {% for result in results %}
         {% if result.error == false %}
-        <div class='begin'>
+        <div class="begin {% if loop.index > 1  %}block{% endif %}">
             Iteration : {{ loop.index }}
 
         </div>
@@ -77,12 +88,11 @@
             </div>
             {% endfor %}
         </div>
-{% else %}
-<div>
-
-        {{ result.error }}
-    </div>
-{% endif %}
+        {% else %}
+        <div>
+              {{ result.error }}
+          </div>
+      {% endif %}
 {% endfor %}
     </body>
 </html>

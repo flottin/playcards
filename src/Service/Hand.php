@@ -7,6 +7,8 @@ use GuzzleHttp\Pool;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 
+use Psr\Log\LoggerInterface;
+
 class Hand
 {
     /*
@@ -52,18 +54,24 @@ class Hand
     private $distribution;
 
     /*
-    * the input array from the first call of webservice
+    * the output array result
     */
     private $sorted;
 
+    public function __construct(LoggerInterface $logger=null)
+    {
 
+        $this->logger = $logger;
+
+
+    }
     /**
     * launch the workflow :
-    * call the first webservice any time
+    * call the first webservice any time needed
     * sort the response
     * push the response to the validation webservice
-    * @param $iteraton integer num of webservice call
-    * @return void
+    * @param $iteration integer : num of webservice call
+    * @return array : the result
     */
     public function launch($iteration = 1)
     {
@@ -78,6 +86,7 @@ class Hand
               yield new Request('GET', $uri);
           }
       };
+      $logger = $this->logger;
       $pool = new Pool($client, $requests($iteration), [
           'concurrency' => 5,
           'fulfilled' => function ($response, $index) use (&$results, &$logger)  {
@@ -94,7 +103,8 @@ class Hand
               }
               catch (\Exception $e)
               {
-                $results[] = ['error'=>$e->getMessage()];
+                $logger->error(__method__ . ' : ' . $e->getMessage());
+                $results[] = ['error'=>true];
               }
           },
           'rejected' => function ($reason, $index) {
@@ -111,32 +121,12 @@ class Hand
       return $results;
     }
 
-
     /**
-    * launch the workflow :
+    * push the result to the validation webservice
     * call the first webservice
-    * sort the response
-    * push the response to the validation webservice
-    * @deprecated
-    * @return void
+    * @throws guzzle Exception
+    * @return
     */
-    public function launch2()
-    {
-        $this->distribution = self::get();
-        $this->sorted = self::sort($this->distribution);
-        self::set($this->sorted, $this->distribution);
-    }
-
-
-
-    public function get()
-    {
-        $client = new \GuzzleHttp\Client();
-        $url = 'https://recrutement.local-trust.com/test/cards/586f4e7f975adeb8520a4b88';
-        $res = $client->request('GET', $url);
-        return json_decode($res->getBody());
-    }
-
     public function set($sorted, $distribution)
     {
         $exerciceId = $distribution->exerciceId;
@@ -156,8 +146,6 @@ class Hand
             'headers' => [ 'Content-Type' => 'application/json' ]
         ]);
 
-
-
         $response = $client->post($url,
             ['body' => $params]
         );
@@ -171,7 +159,6 @@ class Hand
     */
     public function sort($distribution)
     {
-
       $res = [];
       foreach ($distribution->data->categoryOrder as $category)
       {
@@ -197,24 +184,6 @@ class Hand
             }
           }
       }
-
       return $results;
-    }
-
-    /**
-    * get the return of the webservice
-    * @return array
-    */
-    public function getDistribution()
-    {
-        return $this->distribution;
-    }
-    /**
-    * get the hand sorted
-    * @return array
-    */
-    public function getSorted()
-    {
-        return $this->sorted;
     }
 }

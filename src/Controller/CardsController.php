@@ -16,8 +16,6 @@ class CardsController extends Controller
     {
         $results = $hand->launch($iterations);
         $error = "There were a problem when validating this cards hand!";
-        $distribution   = $hand->getDistribution();
-        $sorted         = $hand->getSorted();
         $datas = array(
              'results'       => $results,
              'colors'       => Hand::COLORS,

@@ -6,8 +6,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\InputOption;
-use Psr\Log\LoggerInterface;
-
 use App\Service\Hand;
 
 class PlayCommand extends Command
@@ -29,13 +27,11 @@ class PlayCommand extends Command
           'How many hands do you need?',
           1
       );
-
     }
 
-    public function __construct(Hand $hand, LoggerInterface $logger)
+    public function __construct(Hand $hand)
     {
         $this->hand = $hand;
-        $this->logger = $logger;
         parent::__construct();
     }
 
@@ -55,7 +51,7 @@ class PlayCommand extends Command
               $output->writeln("<error>There were a problem when validating this cards hand!</error>");
               $output->writeln("");
               $output->writeln("");
-              $this->logger->error(__method__ . ' : ' . $result['error']);
+
               continue;
             }
             $it = $num + 1;

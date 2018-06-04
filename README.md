@@ -10,8 +10,12 @@ It shows the use of  :
 - a web based application
 - a service processing the hand of cards (called by console and web page)
 - guzzle with asynchronous multicall of webservice (with the key word yield) and the promise concept
-- unit test of the service hand
+- unit test of the service hand (sort method)
 - logging error
+
+## Improvments
+- move constant from Hand service towards an interface class for display or making an helper
+- add functionnals tests using goutte for exemple : https://github.com/FriendsOfPHP/Goutte
 
 ## installation
 
