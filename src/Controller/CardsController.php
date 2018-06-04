@@ -10,11 +10,11 @@ use App\Service\Hand;
 class CardsController extends Controller
 {
   /**
-   * @Route("/cards/play/{iterations}")
+   * @Route("/cards/play/{iterations}/{dryrun}")
    */
-    public function play( $iterations=1, Hand $hand)
+    public function play( $iterations=1, $dryrun=false, Hand $hand)
     {
-        $results = $hand->launch($iterations);
+        $results = $hand->launch($iterations, (bool)$dryrun);
         $error = "There were a problem when validating this cards hand!";
         $datas = array(
              'results'       => $results,

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+{% spaceless %}
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
@@ -8,7 +9,6 @@
         body{
           font-size: 0.8em;
           font-family: Arial, Helvetica, sans-serif;
-
         }
         #distribution, #sorted
         {
@@ -28,6 +28,8 @@
               display: flex;
               align-items: center;
               justify-content: center;
+              box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, .4);
+
         }
         #sorted{
             clear: both;
@@ -53,8 +55,9 @@
 
         </style>
     </head>
+    {% endspaceless %}
     <body>
-
+{% spaceless %}
       {% for result in results %}
         {% if result.error == false %}
         <div class="begin {% if loop.index > 1  %}block{% endif %}">
@@ -64,13 +67,13 @@
         <div class="header">
             Category order :
             {% for value in result.distribution.data.categoryOrder %}
-                {{ value }}
+                <span class="{{ value|lower }}">{{ categories[value] }}</span>
             {% endfor %}
         </div>
         <div class="header">
             Height order :
             {% for value in result.distribution.data.valueOrder %}
-                {{ value }}
+                {{ height[value] }}
             {% endfor %}
         </div>
         <div id="title">
@@ -78,10 +81,7 @@
         </div>
         <div id="distribution">
             {% for card in result.distribution.data.cards %}
-                <div class="card {{ card.category|lower }}">
-            {{ height[card.value] }} {{ categories[card.category] }}
-                </div>
-
+                <div class="card {{ card.category|lower }}">{{ height[card.value] }} {{ categories[card.category] }}</div>
             {% endfor %}
         </div>
         <div id="title">
@@ -89,16 +89,13 @@
         </div>
         <div id="sorted">
             {% for card in result.sorted %}
-                <div class="card {{ card.category|lower }}">
-            {{ height[card.value] }} {{ categories[card.category] }}
-            </div>
+                <div class="card {{ card.category|lower }}">{{ height[card.value] }} {{ categories[card.category] }}</div>
             {% endfor %}
         </div>
         {% else %}
-        <div>
-              {{ result.error }}
-          </div>
+        <div>{{ result.error }}</div>
       {% endif %}
 {% endfor %}
+{% endspaceless %}
     </body>
 </html>

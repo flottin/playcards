@@ -65,6 +65,28 @@ class Hand
 
 
     }
+
+
+    public function launchTest($iteration = 1)
+    {
+      $d = '{"exerciceId":"5b14fbd6975a0c0e5ee75bcd","dateCreation":1528101846239,"candidate":{"candidateId":"586f4e7f975adeb8520a4b88","firstName":"Youssef","lastName":"Morjane"},"data":{"cards":[{"category":"SPADE","value":"SIX"},{"category":"SPADE","value":"SEVEN"},{"category":"DIAMOND","value":"TEN"},{"category":"HEART","value":"ACE"},{"category":"SPADE","value":"EIGHT"},{"category":"DIAMOND","value":"FOUR"},{"category":"HEART","value":"NINE"},{"category":"SPADE","value":"TWO"},{"category":"CLUB","value":"FIVE"},{"category":"CLUB","value":"FIVE"}],"categoryOrder":["DIAMOND","HEART","SPADE","CLUB"],"valueOrder":["ACE","TWO","THREE","FOUR","FIVE","SIX","SEVEN","EIGHT","NINE","TEN","JACK","QUEEN","KING"]},"name":"cards"}';
+      $distribution = json_decode($d);
+
+      $e = '[{"category":"DIAMOND","value":"FOUR"},{"category":"DIAMOND","value":"TEN"},{"category":"HEART","value":"ACE"},{"category":"HEART","value":"NINE"},{"category":"SPADE","value":"TWO"},{"category":"SPADE","value":"SIX"},{"category":"SPADE","value":"SEVEN"},{"category":"SPADE","value":"EIGHT"},{"category":"CLUB","value":"THREE"},{"category":"CLUB","value":"SIX"}]';
+      $sorted = json_decode ($e);
+      $results = [];
+      for($i = 1; $i <= $iteration ; $i ++)
+      {
+
+
+      $results[] = [
+        'distribution' => $distribution,
+        'sorted' => $sorted,
+        'error'=>false
+        ] ;
+      }
+        return $results;
+    }
     /**
     * launch the workflow :
     * call the first webservice any time needed
@@ -73,9 +95,12 @@ class Hand
     * @param $iteration integer : num of webservice call
     * @return array : the result
     */
-    public function launch($iteration = 1)
+    public function launch($iteration = 1, $dryrun = false)
     {
-
+      if (true === $dryrun )
+      {
+        return self::launchTest($iteration);
+      }
       $results = [];
       $client = new Client();
 

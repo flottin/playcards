@@ -1,0 +1,23 @@
+{% for result in results %}
+{% if result.error == false %}
+Iteration : {{ loop.index }}
+Category order: {% for value in result.distribution.data.categoryOrder %}<{{ colors[value] }}> {{ categories[value] }} </>{% endfor %}
+
+Height order: {% for value in result.distribution.data.valueOrder %}{{ height[value]|replace({' 1':'1', ' ': '-', '10': '-10'})}}{% endfor %}
+
+Hand input :
+<carpet>                                                             </>
+<carpet> </>{% for card in result.distribution.data.cards %}<{{ colors[card.category] }}>{{ height[card.value] }} {{ categories[card.category] }} </><carpet> </>{% endfor %}
+
+<carpet>                                                             </>
+Hand output :
+<carpet>                                                             </>
+<carpet> </>{% for card in result.sorted %}
+<{{ colors[card.category] }}>{{ height[card.value] }} {{ categories[card.category] }} </><carpet> </>{% endfor %}
+
+<carpet>                                                             </>
+{% else %}
+{{ result.error }}
+{% endif %}
+
+{% endfor %}
