@@ -47,7 +47,7 @@ class PlayCommand extends Command
         $output->getFormatter()->setStyle('card', $outputStyleCard);
         $output->getFormatter()->setStyle('black', $outputStyleCardBlack);
         $results = $this->hand->launch($input->getOption('iterations'));
-        $greenCarpet = '<carpet>'.str_pad(' ', 40).'</>';
+        $greenCarpet = '<carpet>'.str_pad(' ', 50).'</>';
         foreach ($results as $num => $result)
         {
             if (false !== $result['error'])
@@ -82,6 +82,7 @@ class PlayCommand extends Command
                 $out = "<carpet> </><";
                 $out .= Hand::COLORS[$card->category];
                 $out .= ">";
+
                 $out .= Hand::HEIGHT[$card->value];
                 $out .= Hand::CATEGORIES[$card->category];
                 $out .= "</><carpet> </>";

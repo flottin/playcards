@@ -33,19 +33,19 @@ class Hand
     * use for final display the height of the category
     */
     const HEIGHT = [
-        "ACE"       => "1",
-        "TWO"       => "2",
-        "THREE"     => "3",
-        "FOUR"      => "4",
-        "FIVE"      => "5",
-        "SIX"       => "6",
-        "SEVEN"     => "7",
-        "EIGHT"     => "8",
-        "NINE"      => "9",
+        "ACE"       => " 1",
+        "TWO"       => " 2",
+        "THREE"     => " 3",
+        "FOUR"      => " 4",
+        "FIVE"      => " 5",
+        "SIX"       => " 6",
+        "SEVEN"     => " 7",
+        "EIGHT"     => " 8",
+        "NINE"      => " 9",
         "TEN"       => "10",
-        "JACK"      => "J",
-        "QUEEN"     => "Q",
-        "KING"      => "K"
+        "JACK"      => " J",
+        "QUEEN"     => " Q",
+        "KING"      => " K"
     ];
 
     /*
