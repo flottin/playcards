@@ -42,7 +42,6 @@ class PlayCommand extends Command
     public function __construct(Hand $hand, Twig_Environment $twig)
     {
         $this->hand = $hand;
-        $this->getContainer('logger');
         $this->twig = $twig;
         parent::__construct();
     }
