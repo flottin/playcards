@@ -23,6 +23,9 @@
         #title{
             clear: both;
         }
+        .begin{
+            clear: both;
+        }
         .heart
         {
             color:red;
@@ -35,16 +38,22 @@
         </style>
     </head>
     <body>
-        {% if error == false %}
+
+      {% for result in results %}
+        {% if result.error == false %}
+        <div class='begin'>
+            Iteration : {{ loop.index }}
+
+        </div>
         <div>
             Category order :
-            {% for value in distribution.data.categoryOrder %}
+            {% for value in result.distribution.data.categoryOrder %}
                 {{ value }}
             {% endfor %}
         </div>
         <div>
             Height order :
-            {% for value in distribution.data.valueOrder %}
+            {% for value in result.distribution.data.valueOrder %}
                 {{ value }}
             {% endfor %}
         </div>
@@ -52,7 +61,7 @@
             Hand input :
         </div>
         <div id="distribution">
-            {% for card in distribution.data.cards %}
+            {% for card in result.distribution.data.cards %}
                 <div class="card {{ card.category|lower }}">
             {{ height[card.value] }} {{ categories[card.category] }}
                 </div>
@@ -62,7 +71,7 @@
             Hand output :
         </div>
         <div id="sorted">
-            {% for card in sorted %}
+            {% for card in result.sorted %}
                 <div class="card {{ card.category|lower }}">
             {{ height[card.value] }} {{ categories[card.category] }}
             </div>
@@ -71,8 +80,9 @@
 {% else %}
 <div>
 
-        {{ error }}
+        {{ result.error }}
     </div>
 {% endif %}
+{% endfor %}
     </body>
 </html>

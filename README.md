@@ -1,33 +1,52 @@
 # playcards
 
-Sort a hand of play cards...
-
-This application can be run in console mode and in a web application
-
-It requires php7.0 minimum
-
+Sort a hand of play cards given by a webservice... This application can be run in console mode and in a web application
+It requires php 7.1.3 minimum.
 It's a symfony application, requiring guzzle
 
+It shows the use of  :
+- last version of symfony
+- a console application
+- a web based application
+- a service processing the hand of cards (called by console and web page)
+- guzzle with asynchronous multicall of webservice (with the key word yield) and the promise concept
+- unit test of the service hand
+- logging error
 
-```
+## installation
+
+```console
+# should display a version >= 7.1.3
+php -v
 git clone https://github.com/flottin/playcards.git
 cd playcards
 php composer.phar -vvvvv up
 ```
 
-#find the ip
+## testing
+
+### unit tests
+```console
+ ./bin/phpunit --testdox
+ ```
+
+## runing
+
+### in console
+```console
+php bin/console play:cards
+php bin/console play:cards --iteration=5
 ```
+
+### web
+find your ip
+```console
 ifconfig
 ```
 
-# run embed server: if your ip is 192.168.0.49
-```
+### run with embeded server: if your ip is 192.168.0.49
+```console
 sudo php bin/console server:start 192.168.0.49:80
 ```
-
-# browse in navigator to http://192.168.0.49/cards/play
-
-# or in console
-```
-sudo php bin/console play:cards
-```
+then browse in your navigator to http://192.168.0.49/cards/play
+or http://192.168.0.49//cards/play/6 if you want 6 iterations

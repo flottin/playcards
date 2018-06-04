@@ -6,6 +6,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\InputOption;
+use Psr\Log\LoggerInterface;
 
 use App\Service\Hand;
 
@@ -13,42 +14,53 @@ class PlayCommand extends Command
 {
     public $hand;
 
+    private $logger;
+
     protected function configure()
     {
       $this
-      ->setName('play:cards')
-      ->setDescription('Cards distribution')
-      ->setHelp('Sort a set of cards')
-      ->addOption(
-        'iterations',
-        null,
-        InputOption::VALUE_OPTIONAL,
-        'How many times should the message be printed?',
-        1
-    );
-    ;
+        ->setName('play:cards')
+        ->setDescription('Cards distribution')
+        ->setHelp('Sort a set of cards : php bin/console play:cards --iteration=5')
+        ->addOption(
+          'iterations',
+          null,
+          InputOption::VALUE_OPTIONAL,
+          'How many hands do you need?',
+          1
+      );
+
     }
 
-    public function __construct(Hand $hand)
+    public function __construct(Hand $hand, LoggerInterface $logger)
     {
         $this->hand = $hand;
+        $this->logger = $logger;
         parent::__construct();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
-        for ($i = 0; $i < $input->getOption('iterations'); $i++) {
-    //$output->writeln($i);
-}
+        $iterations = $input->getOption('iterations');
         $outputStyle = new OutputFormatterStyle('black', 'green', array());
         $outputStyleRed = new OutputFormatterStyle('red', 'green', array());
         $output->getFormatter()->setStyle('black', $outputStyle);
         $output->getFormatter()->setStyle('red', $outputStyleRed);
-        try {
-            $this->hand->launch();
 
-            $distribution = $this->hand->getDistribution();
+        $results = $this->hand->launch($input->getOption('iterations'));
+        foreach ($results as $num => $result)
+        {
+            if (false !== $result['error'])
+            {
+              $output->writeln("<error>There were a problem when validating this cards hand!</error>");
+              $output->writeln("");
+              $output->writeln("");
+              $this->logger->error(__method__ . ' : ' . $result['error']);
+              continue;
+            }
+            $it = $num + 1;
+            $output->writeln('Iteration : ' . $it);
+            $distribution = $result['distribution'];
             $out = 'Category Order : ';
             foreach ($distribution->data->categoryOrder as $value)
             {
@@ -74,7 +86,7 @@ class PlayCommand extends Command
             }
             $output->writeln("");
 
-            $sorted = $this->hand->getSorted();
+            $sorted = $result['sorted'];
             $output->writeln('Hand output : ');
             foreach ($sorted as $card)
             {
@@ -88,10 +100,7 @@ class PlayCommand extends Command
                 $output->write($out);
             }
             $output->writeln("");
-        }
-        catch (\Exception $e)
-        {
-            $output->writeln("<error>There were a problem when validating this cards hand!</error>");
-        }
+            $output->writeln("");
+      }
     }
 }
