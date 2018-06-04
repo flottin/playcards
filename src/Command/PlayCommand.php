@@ -39,11 +39,28 @@ class PlayCommand extends Command
     {
         $iterations = $input->getOption('iterations');
         $outputStyle = new OutputFormatterStyle('black', 'green', array());
-        $outputStyleRed = new OutputFormatterStyle('red', 'green', array());
-        $output->getFormatter()->setStyle('black', $outputStyle);
+        $outputStyleRed = new OutputFormatterStyle('red', 'white', array());
+        $outputStyleCard = new OutputFormatterStyle('red', 'white', array());
+        $outputStyleCardBlack = new OutputFormatterStyle('black', 'white', array());
+        $output->getFormatter()->setStyle('carpet', $outputStyle);
         $output->getFormatter()->setStyle('red', $outputStyleRed);
+        $output->getFormatter()->setStyle('card', $outputStyleCard);
+        $output->getFormatter()->setStyle('black', $outputStyleCardBlack);
+//$output->writeln('<black>'.str_pad(' ', 40).'</>');
+// $output->write("<black> </><card>1\u{2660}</><black> </>");
+// $output->write("<black> </><card>1\u{2660}</><black> </>");
+// $output->write("<black> </><card>1\u{2660}</><black> </>");
+// $output->write("<black> </><card>1\u{2660}</><black> </>");
+// $output->write("<black> </><card>1\u{2660}</><black> </>");
+// $output->write("<black> </><card>1\u{2660}</><black> </>");
+// $output->write("<black> </><card>1\u{2660}</><black> </>");
+// $output->write("<black> </><card>1\u{2660}</><black> </>");
+// $output->write("<black> </><card>1\u{2660}</><black> </>");
+// $output->writeln("<black> </><card>1\u{2660}</><black> </>");
+//$output->writeln('<black>'.str_pad(' ', 40).'</>');
 
         $results = $this->hand->launch($input->getOption('iterations'));
+        $greenCarpet = '<carpet>'.str_pad(' ', 40).'</>';
         foreach ($results as $num => $result)
         {
             if (false !== $result['error'])
@@ -70,31 +87,39 @@ class PlayCommand extends Command
             }
             $output->writeln($out);
             $output->writeln('Hand input : ');
+
+            $output->writeln($greenCarpet);
             foreach ($distribution->data->cards as $card)
             {
-                $out = "<";
+
+                $out = "<carpet> </><";
                 $out .= Hand::COLORS[$card->category];
-                $out .= "> ";
+                $out .= ">";
                 $out .= Hand::HEIGHT[$card->value];
                 $out .= Hand::CATEGORIES[$card->category];
-                $out .= "</>";
+                $out .= "</><carpet> </>";
                 $output->write($out);
             }
+            $output->writeln("");
+            $output->writeln($greenCarpet);
             $output->writeln("");
 
             $sorted = $result['sorted'];
             $output->writeln('Hand output : ');
+            $output->writeln($greenCarpet);
             foreach ($sorted as $card)
             {
-                $out = "<";
+                $out = "<carpet> </><";
                 $out .= Hand::COLORS[$card->category];
-                $out .= "> ";
+                $out .= ">";
                 $out .= Hand::HEIGHT[$card->value];
                 $out .= Hand::CATEGORIES[$card->category];
-                $out .= "</>";
+                $out .= "</><carpet> </>";
 
                 $output->write($out);
             }
+            $output->writeln("");
+            $output->writeln($greenCarpet);
             $output->writeln("");
             $output->writeln("");
       }

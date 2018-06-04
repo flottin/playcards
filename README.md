@@ -38,6 +38,7 @@ php composer.phar -vvvvv up
 
 ### in console
 ```console
+php bin/console play:cards --help
 php bin/console play:cards
 php bin/console play:cards --iteration=5
 ```
