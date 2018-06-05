@@ -204,6 +204,7 @@ class Hand
     public function sort($distribution)
     {
       $res = [];
+      if (!isset ($distribution->data)) return [];
       foreach ($distribution->data->categoryOrder as $category)
       {
           foreach ($distribution->data->cards as $card)

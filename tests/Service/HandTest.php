@@ -33,4 +33,18 @@ class HandTest extends TestCase
         $result = $hand->sort($distribution);
         $this->assertNotEquals($expected, $result);
     }
+    public function testEmptysorted()
+    {
+      $d = '[]';
+      $distribution = json_decode($d);
+
+      $e = '[]';
+      $expected = json_decode ($e);
+        $distribution = [];
+        $expected = [];
+        $hand = new Hand();
+        $result = $hand->sort($distribution);
+        var_dump($result);
+        $this->assertEquals($expected, $result);
+    }
 }
