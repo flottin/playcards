@@ -12,6 +12,7 @@ It shows the use of  :
 - guzzle with asynchronous multicall of webservice (with the key word yield) and the promise concept
 - unit test of the service hand (sort method)
 - logging error
+- dryrun
 
 ## Improvments
 - move constant from Hand service towards an interface class for display or making an helper
@@ -39,19 +40,20 @@ php composer.phar -vvvvv up
 ### in console
 ```console
 php bin/console play:cards --help
+php bin/console play:cards --dryrun=true
+php bin/console play:cards --iteration=5 --dryrun=true
 php bin/console play:cards
 php bin/console play:cards --iteration=5
 ```
 
-### web
-find your ip
-```console
-ifconfig
-```
 
-### run with embeded server: if your ip is 192.168.0.49
+
+### run with embeded server
 ```console
-sudo php bin/console server:start 192.168.0.49:80
+sudo php bin/console server:start
 ```
-then browse in your navigator to http://192.168.0.49/cards/play
-or http://192.168.0.49//cards/play/6 if you want 6 iterations
+then browse in your navigator to:
+- http://127.0.0.1:8000/cards/play/1/true : launch with dryrun
+- http://127.0.0.1:8000/cards/play/6/true : launch 6 iterations in dryrun
+- http://127.0.0.1:8000/cards/play : launch
+- http://127.0.0.1:8000/cards/play/6 : launch 6 iterations

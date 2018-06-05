@@ -52,7 +52,22 @@
         {
             color:red;
         }
+        .validated
+        {
+            color:green;
+            animation: blinker steps(1) 3000ms  infinite;
+            animation-timing-function:ease-in;
+        }
 
+        @keyframes blinker {
+          0%,20% {
+            opacity: 0;
+          }
+          21%, 100%{
+            opacity: 100;
+          }
+
+        }
         </style>
     </head>
     {% endspaceless %}
@@ -85,7 +100,7 @@
             {% endfor %}
         </div>
         <div id="title">
-            Hand output :
+            Hand output : <span class="validated">validated</span>
         </div>
         <div id="sorted">
             {% for card in result.sorted %}

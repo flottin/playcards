@@ -58,15 +58,19 @@ class Hand
     */
     private $sorted;
 
+    /**
+    *
+    */
     public function __construct(LoggerInterface $logger=null)
     {
-
         $this->logger = $logger;
-
-
     }
 
-
+    /**
+    * use for dryrun
+    * @param $iteration integer : num of webservice call
+    * @return array results
+    */
     public function launchTest($iteration = 1)
     {
       $d = '{"exerciceId":"5b14fbd6975a0c0e5ee75bcd","dateCreation":1528101846239,"candidate":{"candidateId":"586f4e7f975adeb8520a4b88","firstName":"Youssef","lastName":"Morjane"},"data":{"cards":[{"category":"SPADE","value":"SIX"},{"category":"SPADE","value":"SEVEN"},{"category":"DIAMOND","value":"TEN"},{"category":"HEART","value":"ACE"},{"category":"SPADE","value":"EIGHT"},{"category":"DIAMOND","value":"FOUR"},{"category":"HEART","value":"NINE"},{"category":"SPADE","value":"TWO"},{"category":"CLUB","value":"FIVE"},{"category":"CLUB","value":"FIVE"}],"categoryOrder":["DIAMOND","HEART","SPADE","CLUB"],"valueOrder":["ACE","TWO","THREE","FOUR","FIVE","SIX","SEVEN","EIGHT","NINE","TEN","JACK","QUEEN","KING"]},"name":"cards"}';
@@ -77,9 +81,7 @@ class Hand
       $results = [];
       for($i = 1; $i <= $iteration ; $i ++)
       {
-
-
-      $results[] = [
+        $results[] = [
         'distribution' => $distribution,
         'sorted' => $sorted,
         'error'=>false
@@ -145,6 +147,23 @@ class Hand
 
       return $results;
     }
+
+    /**
+    * get datas for display
+    * @param array $results
+    * @return array enhanced result
+    */
+    public function getDatas($results)
+    {
+      $datas = array(
+           'results'       => $results,
+           'colors'       => self::COLORS,
+           'categories'   => self::CATEGORIES,
+           'height'       => self::HEIGHT
+       );
+       return $datas;
+    }
+
 
     /**
     * push the result to the validation webservice

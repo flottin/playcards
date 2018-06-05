@@ -16,12 +16,7 @@ class CardsController extends Controller
     {
         $results = $hand->launch($iterations, (bool)$dryrun);
         $error = "There were a problem when validating this cards hand!";
-        $datas = array(
-             'results'       => $results,
-             'colors'       => Hand::COLORS,
-             'categories'   => Hand::CATEGORIES,
-             'height'       => Hand::HEIGHT
-         );
+        $datas = $hand->getDatas($results);
         return $this->render(
                    'cards/play.html.twig',
                    $datas

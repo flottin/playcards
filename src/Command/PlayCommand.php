@@ -53,18 +53,13 @@ class PlayCommand extends Command
       $outputStyle          = new OutputFormatterStyle('black', 'green', array());
       $outputStyleRed       = new OutputFormatterStyle('red', 'white', array());
       $outputStyleCardBlack = new OutputFormatterStyle('black', 'white', array());
+      $outputStyleValidated = new OutputFormatterStyle('green', 'default', array());
       $output->getFormatter()->setStyle('carpet', $outputStyle);
       $output->getFormatter()->setStyle('red', $outputStyleRed);
       $output->getFormatter()->setStyle('black', $outputStyleCardBlack);
-
+      $output->getFormatter()->setStyle('validated', $outputStyleValidated);
       $results = $this->hand->launch($iterations, (bool)$dryrun);
-      $error = "There were a problem when validating this cards hand!";
-      $datas = array(
-           'results'       => $results,
-           'colors'       => Hand::COLORS,
-           'categories'   => Hand::CATEGORIES,
-           'height'       => Hand::HEIGHT
-       );
+      $datas = $this->hand->getDatas($results);
       $template = $this->twig->render('command/play.twig', $datas);
       $output->writeln( $template );
     }

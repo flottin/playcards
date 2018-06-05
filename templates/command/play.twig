@@ -10,7 +10,7 @@ Hand input :
 <carpet> </>{% for card in result.distribution.data.cards %}<{{ colors[card.category] }}>{{ height[card.value] }} {{ categories[card.category] }} </><carpet> </>{% endfor %}
 
 <carpet>                                                             </>
-Hand output :
+Hand output : <validated>validated</>
 <carpet>                                                             </>
 <carpet> </>{% for card in result.sorted %}
 <{{ colors[card.category] }}>{{ height[card.value] }} {{ categories[card.category] }} </><carpet> </>{% endfor %}
