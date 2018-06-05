@@ -46,8 +46,6 @@ php bin/console play:cards
 php bin/console play:cards --iteration=5
 ```
 
-
-
 ### run with embeded server
 ```console
 sudo php bin/console server:start
