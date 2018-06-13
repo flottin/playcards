@@ -45,7 +45,9 @@ class PlayCommand extends Command
         $this->twig = $twig;
         parent::__construct();
     }
-
+    /**
+     * launch programm
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
       $dryrun               = (bool)$input->getOption('dryrun');
@@ -60,6 +62,7 @@ class PlayCommand extends Command
       $output->getFormatter()->setStyle('validated', $outputStyleValidated);
       $results = $this->hand->launch($iterations, (bool)$dryrun);
       $datas = $this->hand->getDatas($results);
+
       $template = $this->twig->render('command/play.twig', $datas);
       $output->writeln( $template );
     }
