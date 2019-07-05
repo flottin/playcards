@@ -104,7 +104,12 @@ class Hand
         return self::launchTest($iteration);
       }
       $results = [];
-      $client = new Client();
+      $client = new Client([
+          'curl' => [
+              CURLOPT_SSL_VERIFYPEER => false
+          ]
+              ]
+      );
 
       $requests = function ($total) {
 
@@ -130,6 +135,7 @@ class Hand
               }
               catch (\Exception $e)
               {
+                  var_dump($e->getMessage());
                 $logger->error(__method__ . ' : ' . $e->getMessage());
                 $results[] = ['error'=>true];
               }
@@ -187,12 +193,19 @@ class Hand
         $params = json_encode($d);
         $url = "https://recrutement.local-trust.com/test/{$exerciceId}";
         $client = new \GuzzleHttp\Client([
+
+            'curl' => [CURLOPT_SSL_VERIFYPEER => false],
+
             'headers' => [ 'Content-Type' => 'application/json' ]
         ]);
 
         $response = $client->post($url,
             ['body' => $params]
         );
+
+
+
+
         return $response;
     }
 
